@@ -1,0 +1,11 @@
+{
+    "name": "multi_language_demo",
+    "version": "0.0.1",
+    "description": "",
+    "category": "application",
+    "template": "",
+    "vsc": true,
+    "plc_model": "",
+    "main_language": "st",
+    "lastOpenTime": 1758027294181
+}

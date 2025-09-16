@@ -1,0 +1,107 @@
+{
+    "IOmem": {
+        "sizeI": 10000,
+        "sizeO": 10000,
+        "sizeM": 10000
+    },
+    "settings": {
+        "default_interval_us": 1000000,
+        "read_errs_threshold": 3,
+        "write_errs_threshold": 3,
+        "fault_action": "ignore"
+    },
+    "network": {
+        "interface_use": {
+            "MBTCP_MASTER": [
+                {
+                    "name": "modbus_master",
+                    "device": "",
+                    "eth": "",
+                    "model": false
+                }
+            ]
+        },
+        "modbusTCP_slaves": [
+            {
+                "device_number": 500,
+                "input_map": [
+                    {
+                        "reg": 3,
+                        "addr": 40001,
+                        "items": 1,
+                        "code": "",
+                        "type": "INT",
+                        "variable": "globals.temperature",
+                        "loc": 0,
+                        "loc_num": 2,
+                        "safe_val": [
+                            null
+                        ],
+                        "desc": "",
+                        "fault": "stop",
+                        "exist_var": true,
+                        "variable_arr": [
+                            "monitoring_data",
+                            "temperature"
+                        ]
+                    },
+                    {
+                        "reg": 3,
+                        "addr": 40002,
+                        "items": 1,
+                        "code": "",
+                        "type": "INT",
+                        "variable": "globals.humidity",
+                        "loc_num": 2,
+                        "safe_val": [
+                            null
+                        ],
+                        "desc": "",
+                        "fault": "stop",
+                        "exist_var": true,
+                        "loc": 2,
+                        "variable_arr": [
+                            "monitoring_data",
+                            "humidity"
+                        ]
+                    },
+                    {
+                        "reg": 3,
+                        "addr": 40003,
+                        "items": 1,
+                        "code": "",
+                        "type": "INT",
+                        "variable": "globals.pressure",
+                        "loc_num": 2,
+                        "safe_val": [
+                            null
+                        ],
+                        "desc": "",
+                        "fault": "stop",
+                        "exist_var": true,
+                        "loc": 4,
+                        "variable_arr": [
+                            "monitoring_data",
+                            "pressure"
+                        ]
+                    }
+                ],
+                "output_map": [],
+                "title": "modbus_slave_simulator",
+                "desc": "",
+                "default_addr": {
+                    "masterName": "modbus_master",
+                    "ip": "192.168.1.149",
+                    "port": 5020,
+                    "slave_ID": 1
+                },
+                "settings": {
+                    "cycle_ms": 50
+                }
+            }
+        ]
+    },
+    "FMTVER_BACK": 2,
+    "FMTVER": 2,
+    "rn": 5
+}

@@ -1,0 +1,32 @@
+{
+    "files": {
+        ".WA\\project.WAPRJ": "7288873a0a94edcecbe801d3d061257b",
+        "CONFIG\\global.WAVARS": "a8b89843c03d37ccbc67d0a23bf05399",
+        "CONFIG\\hmi.cfg": "adcd4a8a4351a64058ab67f8494dd638",
+        "CONFIG\\project.IOMAP": "0a4b1e3cb79dca17dad756e79f718aa8",
+        "CONFIG\\resources.WARES": "0434b444842ddee26a9007796e2e12c3",
+        "MODULES\\rust_computing_lib\\.MODULE\\excludes.WAEX": "d751713988987e9331980363e24189ce",
+        "MODULES\\rust_computing_lib\\.MODULE\\interface.WAMOD": "37e608952088f9289598bde3006b3286",
+        "MODULES\\rust_computing_lib\\.MODULE\\rust\\lib.rs": "8d4dd74cb1bf886b599d8285e1b6dc7a",
+        "MODULES\\rust_computing_lib\\.MODULE\\rust\\wa_interface.rs": "0ee291fd5137b36e450e6bdff031a8ca",
+        "MODULES\\rust_computing_lib\\implements\\rust\\simple_computing.rs": "b386f56b6ddcaa72ccab438d0f69d26d",
+        "MODULES\\rust_computing_lib\\implements\\rust\\wa_func.rs": "95572af614678850aad7b97c281f2ec7",
+        "PROGRAM\\DOUs\\User_DataTypes.st": "0db96e90766720ec10eee52efe6f7e36",
+        "PROGRAM\\POU_FULL_ST\\main.st": "2f34b72dad46c4f7052bd93707fd544e"
+    },
+    "modules": [
+        {
+            "namespace": "rust_computing_lib",
+            "vendor": "frei",
+            "version": "1.0.0",
+            "display_name": "rs_comput_lib",
+            "category": "binary",
+            "language": "Rust",
+            "debug": false,
+            "servo_drv": false,
+            "live_update": true,
+            "description": "",
+            "name": "rust_computing_lib"
+        }
+    ]
+}

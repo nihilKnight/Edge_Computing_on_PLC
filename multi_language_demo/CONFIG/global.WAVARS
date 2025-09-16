@@ -1,0 +1,47 @@
+[
+    {
+        "date": "",
+        "name": "temperature",
+        "type": "INT",
+        "constant": false,
+        "retain": false,
+        "category": "VAR_GLOBAL",
+        "init": "",
+        "isArray": false,
+        "comment": "",
+        "location": "IW0",
+        "type_arr": "INT",
+        "group": "monitoring_data",
+        "row_index": 0
+    },
+    {
+        "date": "",
+        "name": "humidity",
+        "type": "INT",
+        "constant": false,
+        "retain": false,
+        "category": "VAR_GLOBAL",
+        "init": "",
+        "isArray": false,
+        "comment": "",
+        "location": "IW2",
+        "type_arr": "INT",
+        "group": "monitoring_data",
+        "row_index": 1
+    },
+    {
+        "date": "",
+        "name": "pressure",
+        "type": "INT",
+        "constant": false,
+        "retain": false,
+        "category": "VAR_GLOBAL",
+        "init": "",
+        "isArray": false,
+        "comment": "",
+        "location": "IW4",
+        "type_arr": "INT",
+        "group": "monitoring_data",
+        "row_index": 2
+    }
+]
