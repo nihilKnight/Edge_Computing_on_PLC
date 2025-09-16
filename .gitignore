@@ -2,4 +2,4 @@
 
 **/.venv
 
-rust_computing_lib/target/
+st_app_with_rust_lib/MODULES/rust_computing_lib/target/
