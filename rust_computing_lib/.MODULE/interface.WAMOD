@@ -1,0 +1,94 @@
+{
+    "namespace": "rust_computing_lib",
+    "vendor": "frei",
+    "version": "1.0.0",
+    "display_name": "rs_comput_lib",
+    "category": "binary",
+    "language": "Rust",
+    "debug": false,
+    "servo_drv": false,
+    "live_update": true,
+    "description": "",
+    "elements": {
+        "POUs": [
+            {
+                "name": "simple_computing",
+                "type": "FB",
+                "ret_type": "",
+                "class": "",
+                "var_decls": [
+                    {
+                        "name": "temperature_data",
+                        "type": "dataSeq50",
+                        "keyword": "VAR_INPUT",
+                        "description": "",
+                        "init": "",
+                        "constant": false,
+                        "retain": false
+                    },
+                    {
+                        "name": "pressure_data",
+                        "type": "dataSeq50",
+                        "keyword": "VAR_INPUT",
+                        "description": "",
+                        "init": "",
+                        "constant": false,
+                        "retain": false
+                    },
+                    {
+                        "name": "humidity_data",
+                        "type": "dataSeq50",
+                        "keyword": "VAR_INPUT",
+                        "description": "",
+                        "init": "",
+                        "constant": false,
+                        "retain": false
+                    },
+                    {
+                        "name": "mean",
+                        "type": "INT",
+                        "keyword": "VAR_OUTPUT",
+                        "description": "",
+                        "init": "0",
+                        "constant": false,
+                        "retain": false
+                    },
+                    {
+                        "name": "variance",
+                        "type": "INT",
+                        "keyword": "VAR_OUTPUT",
+                        "description": "",
+                        "init": "0",
+                        "constant": false,
+                        "retain": false
+                    },
+                    {
+                        "name": "standard_deviation",
+                        "type": "INT",
+                        "keyword": "VAR_OUTPUT",
+                        "description": "",
+                        "init": "0",
+                        "constant": false,
+                        "retain": false
+                    }
+                ],
+                "invisiable": false,
+                "description": ""
+            }
+        ],
+        "datatypes": [
+            {
+                "name": "dataSeq50",
+                "category": "array",
+                "type": "INT",
+                "init": "",
+                "elements": [],
+                "dimension": 1,
+                "length": [
+                    50
+                ],
+                "array1": 50
+            }
+        ]
+    }
+}
