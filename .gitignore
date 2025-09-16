@@ -1,0 +1,5 @@
+**/.vscode
+
+**/.venv
+
+rust_computing_lib/target/
