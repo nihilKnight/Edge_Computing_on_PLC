@@ -1,47 +1,51 @@
-
-
 use std::os::raw::*;
 use crate::wa_interface::z_anm_detc_FUNCTION_BLOCK;
 use std::mem;
 use std::ptr;
 
 #[repr(C)]
-// Z Anomaly Detection State
-struct ZADState {
+#[derive(Copy, Clone)]
+struct StatState {
     count: u64,
     mean: f64,
     m2: f64,
 }
 
-impl ZADState {
-    fn new() -> Self {
-        Self {
-            count: 0,
-            mean: 0.0,
-            m2: 0.0,
-        }
+impl StatState {
+    const fn new() -> Self {
+        Self { count: 0, mean: 0.0, m2: 0.0 }
     }
 
     fn update(&mut self, x: f64) -> (f64, f64, f64, f64) {
-        // Welford incremental algorithm
         self.count += 1;
         let delta = x - self.mean;
         self.mean += delta / self.count as f64;
         let delta2 = x - self.mean;
         self.m2 += delta * delta2;
-
         let variance = if self.count > 1 {
             self.m2 / self.count as f64
-        } else {
-            0.0
-        };
+        } else { 0.0 };
         let std_dev = variance.sqrt();
-        let z_score = if std_dev > 0.0 {
-            (x - self.mean) / std_dev
-        } else {
-            0.0
-        };
-        (self.mean, variance, std_dev, z_score)
+        let z = if std_dev > 0.0 { (x - self.mean) / std_dev } else { 0.0 };
+        (self.mean, variance, std_dev, z)
+    }
+}
+
+#[repr(C)]
+// Z Anomaly Detection State
+struct ZADState {
+    temp: StatState,
+    press: StatState,
+    hum: StatState,
+}
+
+impl ZADState {
+    fn new() -> Self {
+        Self {
+            temp: StatState::new(),
+            press: StatState::new(),
+            hum: StatState::new(),
+        }
     }
 }
 
@@ -76,14 +80,25 @@ pub extern "C" fn z_anm_detc(this: *mut z_anm_detc_FUNCTION_BLOCK, instance: *co
         let fb = &mut *this;
         let state = &mut *state_ptr;
 
-        // Update stats with current reading
-        let x = (fb.temperature as f64 + fb.pressure as f64 + fb.humidity as f64) / 3.0;
-        let (mean, var, std_dev, z) = state.update(x);
+        // Update each sensor independently
+        let (t_mean, t_var, t_sd, t_z) = state.temp.update(fb.temperature as f64);
+        let (p_mean, p_var, p_sd, p_z) = state.press.update(fb.pressure as f64);
+        let (h_mean, h_var, h_sd, h_z) = state.hum.update(fb.humidity as f64);
 
-        fb.mean = mean as c_float;
-        fb.variance = var as c_float;
-        fb.standard_deviation = std_dev as c_float;
-        fb.z_score = z as c_float;
+        fb.t_mean = t_mean as c_float;
+        fb.t_variance = t_var as c_float;
+        fb.t_standard_deviation = t_sd as c_float;
+        fb.t_z_score = t_z as c_float;
+
+        fb.p_mean = p_mean as c_float;
+        fb.p_variance = p_var as c_float;
+        fb.p_standard_deviation = p_sd as c_float;
+        fb.p_z_score = p_z as c_float;
+
+        fb.h_mean = h_mean as c_float;
+        fb.h_variance = h_var as c_float;
+        fb.h_standard_deviation = h_sd as c_float;
+        fb.h_z_score = h_z as c_float;
 
     }
 }

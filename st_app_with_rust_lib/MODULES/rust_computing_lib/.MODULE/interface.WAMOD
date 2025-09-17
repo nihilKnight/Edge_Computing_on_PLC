@@ -45,7 +45,7 @@
                         "retain": false
                     },
                     {
-                        "name": "mean",
+                        "name": "t_mean",
                         "type": "REAL",
                         "keyword": "VAR_OUTPUT",
                         "description": "",
@@ -54,7 +54,7 @@
                         "retain": false
                     },
                     {
-                        "name": "variance",
+                        "name": "t_variance",
                         "type": "REAL",
                         "keyword": "VAR_OUTPUT",
                         "description": "",
@@ -63,7 +63,7 @@
                         "retain": false
                     },
                     {
-                        "name": "standard_deviation",
+                        "name": "t_standard_deviation",
                         "type": "REAL",
                         "keyword": "VAR_OUTPUT",
                         "description": "",
@@ -72,7 +72,79 @@
                         "retain": false
                     },
                     {
-                        "name": "z_score",
+                        "name": "t_z_score",
+                        "type": "REAL",
+                        "keyword": "VAR_OUTPUT",
+                        "description": "",
+                        "init": "0",
+                        "constant": false,
+                        "retain": false
+                    },
+                    {
+                        "name": "p_mean",
+                        "type": "REAL",
+                        "keyword": "VAR_OUTPUT",
+                        "description": "",
+                        "init": "0",
+                        "constant": false,
+                        "retain": false
+                    },
+                    {
+                        "name": "p_variance",
+                        "type": "REAL",
+                        "keyword": "VAR_OUTPUT",
+                        "description": "",
+                        "init": "0",
+                        "constant": false,
+                        "retain": false
+                    },
+                    {
+                        "name": "p_standard_deviation",
+                        "type": "REAL",
+                        "keyword": "VAR_OUTPUT",
+                        "description": "",
+                        "init": "0",
+                        "constant": false,
+                        "retain": false
+                    },
+                    {
+                        "name": "p_z_score",
+                        "type": "REAL",
+                        "keyword": "VAR_OUTPUT",
+                        "description": "",
+                        "init": "0",
+                        "constant": false,
+                        "retain": false
+                    },
+                    {
+                        "name": "h_mean",
+                        "type": "REAL",
+                        "keyword": "VAR_OUTPUT",
+                        "description": "",
+                        "init": "0",
+                        "constant": false,
+                        "retain": false
+                    },
+                    {
+                        "name": "h_variance",
+                        "type": "REAL",
+                        "keyword": "VAR_OUTPUT",
+                        "description": "",
+                        "init": "0",
+                        "constant": false,
+                        "retain": false
+                    },
+                    {
+                        "name": "h_standard_deviation",
+                        "type": "REAL",
+                        "keyword": "VAR_OUTPUT",
+                        "description": "",
+                        "init": "0",
+                        "constant": false,
+                        "retain": false
+                    },
+                    {
+                        "name": "h_z_score",
                         "type": "REAL",
                         "keyword": "VAR_OUTPUT",
                         "description": "",
@@ -85,19 +157,6 @@
                 "description": ""
             }
         ],
-        "datatypes": [
-            {
-                "name": "dataSeq50",
-                "category": "array",
-                "type": "INT",
-                "init": "",
-                "elements": [],
-                "dimension": 1,
-                "length": [
-                    50
-                ],
-                "array1": 50
-            }
-        ]
+        "datatypes": []
     }
 }

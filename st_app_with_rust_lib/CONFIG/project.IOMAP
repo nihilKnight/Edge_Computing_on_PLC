@@ -43,7 +43,9 @@
                         "variable_arr": [
                             "monitoring_data",
                             "temperature"
-                        ]
+                        ],
+                        "error_msg": "",
+                        "locEdit": "0"
                     },
                     {
                         "reg": 3,
@@ -63,7 +65,9 @@
                         "variable_arr": [
                             "monitoring_data",
                             "humidity"
-                        ]
+                        ],
+                        "error_msg": "",
+                        "locEdit": "2"
                     },
                     {
                         "reg": 3,
@@ -83,7 +87,9 @@
                         "variable_arr": [
                             "monitoring_data",
                             "pressure"
-                        ]
+                        ],
+                        "error_msg": "",
+                        "locEdit": "4"
                     }
                 ],
                 "output_map": [],
@@ -91,7 +97,7 @@
                 "desc": "",
                 "default_addr": {
                     "masterName": "modbus_master",
-                    "ip": "192.168.1.136",
+                    "ip": "127.0.0.1",
                     "port": 502,
                     "slave_ID": 1
                 },
@@ -103,5 +109,5 @@
     },
     "FMTVER_BACK": 2,
     "FMTVER": 2,
-    "rn": 11
+    "rn": 12
 }
