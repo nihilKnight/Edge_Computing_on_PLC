@@ -17,7 +17,7 @@ from pymodbus import ModbusDeviceIdentification
 
 # --------------------------- Configuration ----------------------------------
 HOST = "0.0.0.0"  # Listen on all interfaces
-PORT = 5020        # Non-privileged default port for testing
+PORT = 502        # Non-privileged default port for testing
 
 # Register addresses (holding registers)
 REG_TEMPERATURE = 0  # Temperature register address

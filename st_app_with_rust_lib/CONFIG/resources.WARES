@@ -1,1 +1,27 @@
-[{"name":"_CONFIGURE_MANUAL_","resources":[{"name":"_RESOURCE_MANUAL_","tasks":[{"name":"MainTask","priority":1,"interval":1}],"programs":[{"task":"MainTask","type":"DEMO_PLC_PRG1"}]}]}]
+[
+    {
+        "name": "_CONFIGURE_MANUAL_",
+        "resources": [
+            {
+                "tasks": [
+                    {
+                        "name": "MainTask",
+                        "priority": 1,
+                        "interval": 1,
+                        "row_index": 0,
+                        "intervalus": 0,
+                        "mode": "cycle"
+                    }
+                ],
+                "programs": [
+                    {
+                        "task": "MainTask",
+                        "type": "ST_PRG_WITH_RS_LIB",
+                        "seq": 1
+                    }
+                ],
+                "name": "_RESOURCE_MANUAL_"
+            }
+        ]
+    }
+]

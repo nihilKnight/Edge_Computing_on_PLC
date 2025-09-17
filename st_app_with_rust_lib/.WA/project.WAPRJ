@@ -7,5 +7,8 @@
     "vsc": true,
     "plc_model": "",
     "main_language": "st",
-    "lastOpenTime": 1758027294181
+    "lastOpenTime": 1758027294181,
+    "select_plc": {
+        "host": "192.168.1.201"
+    }
 }

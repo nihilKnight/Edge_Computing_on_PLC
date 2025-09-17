@@ -27,7 +27,7 @@
                 "input_map": [
                     {
                         "reg": 3,
-                        "addr": 40001,
+                        "addr": 0,
                         "items": 1,
                         "code": "",
                         "type": "INT",
@@ -47,7 +47,7 @@
                     },
                     {
                         "reg": 3,
-                        "addr": 40002,
+                        "addr": 1,
                         "items": 1,
                         "code": "",
                         "type": "INT",
@@ -67,7 +67,7 @@
                     },
                     {
                         "reg": 3,
-                        "addr": 40003,
+                        "addr": 2,
                         "items": 1,
                         "code": "",
                         "type": "INT",
@@ -91,8 +91,8 @@
                 "desc": "",
                 "default_addr": {
                     "masterName": "modbus_master",
-                    "ip": "192.168.1.149",
-                    "port": 5020,
+                    "ip": "192.168.1.136",
+                    "port": 502,
                     "slave_ID": 1
                 },
                 "settings": {
@@ -103,5 +103,5 @@
     },
     "FMTVER_BACK": 2,
     "FMTVER": 2,
-    "rn": 5
+    "rn": 11
 }
