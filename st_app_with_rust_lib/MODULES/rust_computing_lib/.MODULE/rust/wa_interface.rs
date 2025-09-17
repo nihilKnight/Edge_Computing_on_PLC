@@ -38,6 +38,9 @@ pub struct spctrm_anlys_FUNCTION_BLOCK {
   pub p_freq: c_float, // VAR_OUTPUT
   pub p_ampl: c_float, // VAR_OUTPUT
   pub p_offset: c_float, // VAR_OUTPUT
+  pub t_phase: c_float, // VAR_OUTPUT
+  pub h_phase: c_float, // VAR_OUTPUT
+  pub p_phase: c_float, // VAR_OUTPUT
 }
 
 /*********** End Function Block spctrm_anlys ***********/

@@ -1,336 +1,406 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>OPC UA PLC 动态控制</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-</head>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+  </head>
 
-<body>
+  <body>
     <div class="app-container">
-        <!-- 头部 -->
-        <header class="header">
-            <div class="header-content">
-                <h1><i class="fas fa-network-wired"></i> OPC UA PLC 动态控制系统</h1>
-                <div class="header-status">
-                    <span class="connection-indicator" id="globalStatus">
-                        <i class="fas fa-circle"></i> 系统状态
-                    </span>
+      <!-- 头部 -->
+      <header class="header">
+        <div class="header-content">
+          <h1><i class="fas fa-network-wired"></i> OPC UA PLC 动态控制系统</h1>
+          <div class="header-status">
+            <span class="connection-indicator" id="globalStatus">
+              <i class="fas fa-circle"></i> 系统状态
+            </span>
+          </div>
+        </div>
+      </header>
+
+      <!-- 主要内容区域 -->
+      <main class="main-content">
+        <!-- 侧边栏 - PLC列表 -->
+        <aside class="sidebar">
+          <div class="sidebar-header">
+            <h2><i class="fas fa-list"></i> PLC 连接</h2>
+            <button id="addPlcBtn" class="btn btn-primary">
+              <i class="fas fa-plus"></i> 添加 PLC
+            </button>
+          </div>
+
+          <div class="plc-list" id="plcList">
+            <!-- PLC列表将动态生成 -->
+          </div>
+        </aside>
+
+        <!-- 主要工作区 -->
+        <div class="workspace">
+          <!-- 欢迎页面 -->
+          <div class="welcome-panel" id="welcomePanel">
+            <div class="welcome-content">
+              <i class="fas fa-robot welcome-icon"></i>
+              <h2>欢迎使用 OPC UA PLC 动态控制系统</h2>
+              <p>请从左侧添加PLC连接开始使用</p>
+              <div class="feature-list">
+                <div class="feature-item">
+                  <i class="fas fa-plus-circle"></i>
+                  <span>动态创建PLC连接</span>
                 </div>
+                <div class="feature-item">
+                  <i class="fas fa-cogs"></i>
+                  <span>实时变量监控与控制</span>
+                </div>
+                <div class="feature-item">
+                  <i class="fas fa-chart-line"></i>
+                  <span>支持多种数据类型</span>
+                </div>
+              </div>
             </div>
-        </header>
+          </div>
 
-        <!-- 主要内容区域 -->
-        <main class="main-content">
-            <!-- 侧边栏 - PLC列表 -->
-            <aside class="sidebar">
-                <div class="sidebar-header">
-                    <h2><i class="fas fa-list"></i> PLC 连接</h2>
-                    <button id="addPlcBtn" class="btn btn-primary">
-                        <i class="fas fa-plus"></i> 添加 PLC
-                    </button>
-                </div>
-
-                <div class="plc-list" id="plcList">
-                    <!-- PLC列表将动态生成 -->
-                </div>
-            </aside>
-
-            <!-- 主要工作区 -->
-            <div class="workspace">
-                <!-- 欢迎页面 -->
-                <div class="welcome-panel" id="welcomePanel">
-                    <div class="welcome-content">
-                        <i class="fas fa-robot welcome-icon"></i>
-                        <h2>欢迎使用 OPC UA PLC 动态控制系统</h2>
-                        <p>请从左侧添加PLC连接开始使用</p>
-                        <div class="feature-list">
-                            <div class="feature-item">
-                                <i class="fas fa-plus-circle"></i>
-                                <span>动态创建PLC连接</span>
-                            </div>
-                            <div class="feature-item">
-                                <i class="fas fa-cogs"></i>
-                                <span>实时变量监控与控制</span>
-                            </div>
-                            <div class="feature-item">
-                                <i class="fas fa-chart-line"></i>
-                                <span>支持多种数据类型</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- PLC控制面板 -->
-                <div class="plc-control-panel" id="plcControlPanel" style="display: none;">
-                    <!-- PLC信息头部 -->
-                    <div class="plc-header" id="plcHeader">
-                        <!-- 动态生成 -->
-                    </div>
-
-                    <!-- 环境监测区域 -->
-                    <div class="env-section">
-                        <div class="section-header">
-                            <h3><i class="fas fa-thermometer-half"></i> 环境监测</h3>
-                        </div>
-
-                        <!-- Temperature 卡片 -->
-                        <div class="sensor-card">
-                            <div class="sensor-header">
-                                <h4><i class="fas fa-temperature-high"></i> Temperature</h4>
-                                <div class="sensor-alarm">
-                                    <span>报警</span>
-                                    <div id="temp-alarm-dot" class="led-dot led-gray"></div>
-                                </div>
-                            </div>
-                            <div class="sensor-content">
-                                <div class="sensor-charts">
-                                    <div class="sensor-line-chart">
-                                        <div class="chart-title">实时数据</div>
-                                        <div id="tempLineChart" class="chart-container"></div>
-                                    </div>
-                                </div>
-                                <div class="sensor-stats">
-                                    <div class="stats-title">统计数据</div>
-                                    <div class="stats-table">
-                                        <div class="stats-row">
-                                            <span>Mean:</span>
-                                            <span id="temp-mean">--</span>
-                                        </div>
-                                        <div class="stats-row">
-                                            <span>Variance:</span>
-                                            <span id="temp-variance">--</span>
-                                        </div>
-                                        <div class="stats-row">
-                                            <span>Std Dev:</span>
-                                            <span id="temp-std-deviation">--</span>
-                                        </div>
-                                        <div class="stats-row">
-                                            <span>Z-Score:</span>
-                                            <span id="temp-z-score">--</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="sensor-sine-chart">
-                                    <div class="chart-title">正弦波</div>
-                                    <div id="tempSineChart" class="chart-container"></div>
-                                    <div class="chart-formula" id="tempSineFormula">y = --</div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Humidity 卡片 -->
-                        <div class="sensor-card">
-                            <div class="sensor-header">
-                                <h4><i class="fas fa-tint"></i> Humidity</h4>
-                                <div class="sensor-alarm">
-                                    <span>报警</span>
-                                    <div id="hum-alarm-dot" class="led-dot led-gray"></div>
-                                </div>
-                            </div>
-                            <div class="sensor-content">
-                                <div class="sensor-charts">
-                                    <div class="sensor-line-chart">
-                                        <div class="chart-title">实时数据</div>
-                                        <div id="humLineChart" class="chart-container"></div>
-                                    </div>
-                                </div>
-                                <div class="sensor-stats">
-                                    <div class="stats-title">统计数据</div>
-                                    <div class="stats-table">
-                                        <div class="stats-row">
-                                            <span>Mean:</span>
-                                            <span id="hum-mean">--</span>
-                                        </div>
-                                        <div class="stats-row">
-                                            <span>Variance:</span>
-                                            <span id="hum-variance">--</span>
-                                        </div>
-                                        <div class="stats-row">
-                                            <span>Std Dev:</span>
-                                            <span id="hum-std-deviation">--</span>
-                                        </div>
-                                        <div class="stats-row">
-                                            <span>Z-Score:</span>
-                                            <span id="hum-z-score">--</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="sensor-sine-chart">
-                                    <div class="chart-title">正弦波</div>
-                                    <div id="humSineChart" class="chart-container"></div>
-                                    <div class="chart-formula" id="humSineFormula">y = --</div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Pressure 卡片 -->
-                        <div class="sensor-card">
-                            <div class="sensor-header">
-                                <h4><i class="fas fa-gauge"></i> Pressure</h4>
-                                <div class="sensor-alarm">
-                                    <span>报警</span>
-                                    <div id="press-alarm-dot" class="led-dot led-gray"></div>
-                                </div>
-                            </div>
-                            <div class="sensor-content">
-                                <div class="sensor-charts">
-                                    <div class="sensor-line-chart">
-                                        <div class="chart-title">实时数据</div>
-                                        <div id="pressLineChart" class="chart-container"></div>
-                                    </div>
-                                </div>
-                                <div class="sensor-stats">
-                                    <div class="stats-title">统计数据</div>
-                                    <div class="stats-table">
-                                        <div class="stats-row">
-                                            <span>Mean:</span>
-                                            <span id="press-mean">--</span>
-                                        </div>
-                                        <div class="stats-row">
-                                            <span>Variance:</span>
-                                            <span id="press-variance">--</span>
-                                        </div>
-                                        <div class="stats-row">
-                                            <span>Std Dev:</span>
-                                            <span id="press-std-deviation">--</span>
-                                        </div>
-                                        <div class="stats-row">
-                                            <span>Z-Score:</span>
-                                            <span id="press-z-score">--</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="sensor-sine-chart">
-                                    <div class="chart-title">正弦波</div>
-                                    <div id="pressSineChart" class="chart-container"></div>
-                                    <div class="chart-formula" id="pressSineFormula">y = --</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 变量控制区域 -->
-                    <div class="variables-section">
-                        <div class="section-header">
-                            <h3><i class="fas fa-code"></i> 变量控制</h3>
-                            <div class="section-controls">
-                                <button id="refreshVariablesBtn" class="btn btn-secondary">
-                                    <i class="fas fa-sync-alt"></i> 刷新
-                                </button>
-                                <button id="addVariableBtn" class="btn btn-primary">
-                                    <i class="fas fa-plus"></i> 添加变量
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="variables-container" id="variablesContainer">
-                            <!-- 变量控制项将动态生成 -->
-                        </div>
-                    </div>
-                </div>
+          <!-- PLC控制面板 -->
+          <div
+            class="plc-control-panel"
+            id="plcControlPanel"
+            style="display: none"
+          >
+            <!-- PLC信息头部 -->
+            <div class="plc-header" id="plcHeader">
+              <!-- 动态生成 -->
             </div>
-        </main>
+
+            <!-- 环境监测区域 -->
+            <div class="env-section">
+              <div class="section-header">
+                <h3><i class="fas fa-thermometer-half"></i> 环境监测</h3>
+              </div>
+
+              <!-- Temperature 卡片 -->
+              <div class="sensor-card">
+                <div class="sensor-header">
+                  <h4><i class="fas fa-temperature-high"></i> Temperature</h4>
+                  <div class="sensor-alarm">
+                    <span>报警</span>
+                    <div id="temp-alarm-dot" class="led-dot led-gray"></div>
+                  </div>
+                </div>
+                <div class="sensor-content">
+                  <div class="sensor-charts">
+                    <div class="sensor-line-chart">
+                      <div class="chart-title">实时数据</div>
+                      <div id="tempLineChart" class="chart-container"></div>
+                    </div>
+                  </div>
+                  <div class="sensor-stats">
+                    <div class="stats-title">统计数据</div>
+                    <div class="stats-table">
+                      <div class="stats-row">
+                        <span>Mean:</span>
+                        <span id="temp-mean">--</span>
+                      </div>
+                      <div class="stats-row">
+                        <span>Variance:</span>
+                        <span id="temp-variance">--</span>
+                      </div>
+                      <div class="stats-row">
+                        <span>Std Dev:</span>
+                        <span id="temp-std-deviation">--</span>
+                      </div>
+                      <div class="stats-row">
+                        <span>Z-Score:</span>
+                        <span id="temp-z-score">--</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="sensor-sine-chart">
+                    <div class="chart-title">频谱分析与数据预测</div>
+                    <div id="tempSineChart" class="chart-container"></div>
+                    <div class="chart-formula" id="tempSineFormula">y = --</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Humidity 卡片 -->
+              <div class="sensor-card">
+                <div class="sensor-header">
+                  <h4><i class="fas fa-tint"></i> Humidity</h4>
+                  <div class="sensor-alarm">
+                    <span>报警</span>
+                    <div id="hum-alarm-dot" class="led-dot led-gray"></div>
+                  </div>
+                </div>
+                <div class="sensor-content">
+                  <div class="sensor-charts">
+                    <div class="sensor-line-chart">
+                      <div class="chart-title">实时数据</div>
+                      <div id="humLineChart" class="chart-container"></div>
+                    </div>
+                  </div>
+                  <div class="sensor-stats">
+                    <div class="stats-title">统计数据</div>
+                    <div class="stats-table">
+                      <div class="stats-row">
+                        <span>Mean:</span>
+                        <span id="hum-mean">--</span>
+                      </div>
+                      <div class="stats-row">
+                        <span>Variance:</span>
+                        <span id="hum-variance">--</span>
+                      </div>
+                      <div class="stats-row">
+                        <span>Std Dev:</span>
+                        <span id="hum-std-deviation">--</span>
+                      </div>
+                      <div class="stats-row">
+                        <span>Z-Score:</span>
+                        <span id="hum-z-score">--</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="sensor-sine-chart">
+                    <div class="chart-title">频谱分析与数据预测</div>
+                    <div id="humSineChart" class="chart-container"></div>
+                    <div class="chart-formula" id="humSineFormula">y = --</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Pressure 卡片 -->
+              <div class="sensor-card">
+                <div class="sensor-header">
+                  <h4><i class="fas fa-gauge"></i> Pressure</h4>
+                  <div class="sensor-alarm">
+                    <span>报警</span>
+                    <div id="press-alarm-dot" class="led-dot led-gray"></div>
+                  </div>
+                </div>
+                <div class="sensor-content">
+                  <div class="sensor-charts">
+                    <div class="sensor-line-chart">
+                      <div class="chart-title">实时数据</div>
+                      <div id="pressLineChart" class="chart-container"></div>
+                    </div>
+                  </div>
+                  <div class="sensor-stats">
+                    <div class="stats-title">统计数据</div>
+                    <div class="stats-table">
+                      <div class="stats-row">
+                        <span>Mean:</span>
+                        <span id="press-mean">--</span>
+                      </div>
+                      <div class="stats-row">
+                        <span>Variance:</span>
+                        <span id="press-variance">--</span>
+                      </div>
+                      <div class="stats-row">
+                        <span>Std Dev:</span>
+                        <span id="press-std-deviation">--</span>
+                      </div>
+                      <div class="stats-row">
+                        <span>Z-Score:</span>
+                        <span id="press-z-score">--</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="sensor-sine-chart">
+                    <div class="chart-title">频谱分析与数据预测</div>
+                    <div id="pressSineChart" class="chart-container"></div>
+                    <div class="chart-formula" id="pressSineFormula">
+                      y = --
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 变量控制区域 -->
+            <div class="variables-section">
+              <div class="section-header">
+                <h3><i class="fas fa-code"></i> 变量控制</h3>
+                <div class="section-controls">
+                  <button id="refreshVariablesBtn" class="btn btn-secondary">
+                    <i class="fas fa-sync-alt"></i> 刷新
+                  </button>
+                  <button id="addVariableBtn" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> 添加变量
+                  </button>
+                </div>
+              </div>
+
+              <div class="variables-container" id="variablesContainer">
+                <!-- 变量控制项将动态生成 -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
     </div>
 
     <!-- 模态框 - 添加PLC -->
     <div class="modal" id="addPlcModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3><i class="fas fa-plus"></i> 添加 PLC 连接</h3>
-                <button class="modal-close" id="closeAddPlcModal">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form id="addPlcForm">
-                    <div class="form-group">
-                        <label for="plcName">PLC 名称*</label>
-                        <input type="text" id="plcName" name="name" required placeholder="例如: 生产线PLC1">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="plcEndpoint">OPC UA 端点*</label>
-                        <input type="text" id="plcEndpoint" name="endpoint" required
-                            placeholder="例如: opc.tcp://192.168.1.100:4840">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="plcNamespace">命名空间 URI（可选）</label>
-                        <input type="text" id="plcNamespace" name="namespace" placeholder="例如: urn:example:server">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="plcNamespaceIndex">命名空间索引</label>
-                        <input type="number" id="plcNamespaceIndex" name="namespaceIndex" value="1" min="0">
-                    </div>
-
-                    <div class="form-group">
-                        <label>预定义变量（可选）</label>
-                        <div class="variables-input" id="predefinedVariables">
-                            <!-- 预定义变量输入项 -->
-                        </div>
-                        <button type="button" id="addPredefinedVariableBtn" class="btn btn-secondary btn-small">
-                            <i class="fas fa-plus"></i> 添加变量
-                        </button>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" id="cancelAddPlc">取消</button>
-                <button type="submit" form="addPlcForm" class="btn btn-primary" id="confirmAddPlc">创建连接</button>
-            </div>
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3><i class="fas fa-plus"></i> 添加 PLC 连接</h3>
+          <button class="modal-close" id="closeAddPlcModal">
+            <i class="fas fa-times"></i>
+          </button>
         </div>
+        <div class="modal-body">
+          <form id="addPlcForm">
+            <div class="form-group">
+              <label for="plcName">PLC 名称*</label>
+              <input
+                type="text"
+                id="plcName"
+                name="name"
+                required
+                placeholder="例如: 生产线PLC1"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="plcEndpoint">OPC UA 端点*</label>
+              <input
+                type="text"
+                id="plcEndpoint"
+                name="endpoint"
+                required
+                placeholder="例如: opc.tcp://192.168.1.100:4840"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="plcNamespace">命名空间 URI（可选）</label>
+              <input
+                type="text"
+                id="plcNamespace"
+                name="namespace"
+                placeholder="例如: urn:example:server"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="plcNamespaceIndex">命名空间索引</label>
+              <input
+                type="number"
+                id="plcNamespaceIndex"
+                name="namespaceIndex"
+                value="1"
+                min="0"
+              />
+            </div>
+
+            <div class="form-group">
+              <label>预定义变量（可选）</label>
+              <div class="variables-input" id="predefinedVariables">
+                <!-- 预定义变量输入项 -->
+              </div>
+              <button
+                type="button"
+                id="addPredefinedVariableBtn"
+                class="btn btn-secondary btn-small"
+              >
+                <i class="fas fa-plus"></i> 添加变量
+              </button>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" id="cancelAddPlc">
+            取消
+          </button>
+          <button
+            type="submit"
+            form="addPlcForm"
+            class="btn btn-primary"
+            id="confirmAddPlc"
+          >
+            创建连接
+          </button>
+        </div>
+      </div>
     </div>
 
     <!-- 模态框 - 添加变量 -->
     <div class="modal" id="addVariableModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3><i class="fas fa-plus"></i> 添加变量</h3>
-                <button class="modal-close" id="closeAddVariableModal">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form id="addVariableForm">
-                    <div class="form-group">
-                        <label for="variableName">变量名称*</label>
-                        <input type="text" id="variableName" name="name" required placeholder="例如: 电机转速">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="variableNodeId">节点ID*</label>
-                        <input type="text" id="variableNodeId" name="nodeId" required
-                            placeholder="例如: ns=1;s=Motor.Speed">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="variableDescription">描述（可选）</label>
-                        <input type="text" id="variableDescription" name="description" placeholder="变量描述信息">
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" id="cancelAddVariable">取消</button>
-                <button type="submit" form="addVariableForm" class="btn btn-primary"
-                    id="confirmAddVariable">添加变量</button>
-            </div>
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3><i class="fas fa-plus"></i> 添加变量</h3>
+          <button class="modal-close" id="closeAddVariableModal">
+            <i class="fas fa-times"></i>
+          </button>
         </div>
+        <div class="modal-body">
+          <form id="addVariableForm">
+            <div class="form-group">
+              <label for="variableName">变量名称*</label>
+              <input
+                type="text"
+                id="variableName"
+                name="name"
+                required
+                placeholder="例如: 电机转速"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="variableNodeId">节点ID*</label>
+              <input
+                type="text"
+                id="variableNodeId"
+                name="nodeId"
+                required
+                placeholder="例如: ns=1;s=Motor.Speed"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="variableDescription">描述（可选）</label>
+              <input
+                type="text"
+                id="variableDescription"
+                name="description"
+                placeholder="变量描述信息"
+              />
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            id="cancelAddVariable"
+          >
+            取消
+          </button>
+          <button
+            type="submit"
+            form="addVariableForm"
+            class="btn btn-primary"
+            id="confirmAddVariable"
+          >
+            添加变量
+          </button>
+        </div>
+      </div>
     </div>
 
     <!-- 消息提示 -->
     <div class="message-container" id="messageContainer">
-        <!-- 消息将动态生成 -->
+      <!-- 消息将动态生成 -->
     </div>
 
     <!-- 加载Socket.IO -->
     <script src="/socket.io/socket.io.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
     <script src="app.js"></script>
-</body>
-
+  </body>
 </html>

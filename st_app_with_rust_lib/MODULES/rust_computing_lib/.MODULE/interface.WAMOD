@@ -269,6 +269,33 @@
                         "init": "",
                         "constant": false,
                         "retain": false
+                    },
+                    {
+                        "name": "t_phase",
+                        "type": "REAL",
+                        "keyword": "VAR_OUTPUT",
+                        "description": "",
+                        "init": "",
+                        "constant": false,
+                        "retain": false
+                    },
+                    {
+                        "name": "h_phase",
+                        "type": "REAL",
+                        "keyword": "VAR_OUTPUT",
+                        "description": "",
+                        "init": "",
+                        "constant": false,
+                        "retain": false
+                    },
+                    {
+                        "name": "p_phase",
+                        "type": "REAL",
+                        "keyword": "VAR_OUTPUT",
+                        "description": "",
+                        "init": "",
+                        "constant": false,
+                        "retain": false
                     }
                 ],
                 "invisiable": false

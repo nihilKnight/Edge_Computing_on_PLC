@@ -23,12 +23,15 @@ PROGRAM ST_PRG_WITH_RS_LIB
         t_freq:                 REAL;
         t_ampl:                 REAL;
         t_offset:               REAL;
+        t_phase:                REAL;
         p_freq:                 REAL;
         p_ampl:                 REAL;
         p_offset:               REAL;
+        p_phase:                REAL;
         h_freq:                 REAL;
         h_ampl:                 REAL;
         h_offset:               REAL;
+        h_phase:                REAL;
 
         // Rust high-efficiency computing lib
         zad:                    z_anm_detc;
@@ -72,12 +75,15 @@ PROGRAM ST_PRG_WITH_RS_LIB
         t_freq => t_freq, 
         t_ampl => t_ampl, 
         t_offset => t_offset, 
+        t_phase => t_phase,
         h_freq => h_freq, 
         h_ampl => h_ampl, 
         h_offset => h_offset, 
+        h_phase => h_phase,
         p_freq => p_freq, 
         p_ampl => p_ampl, 
-        p_offset => p_offset
+        p_offset => p_offset,
+        p_phase => p_phase
     );
 
     // Check whether temperature's Z score has anomaly.

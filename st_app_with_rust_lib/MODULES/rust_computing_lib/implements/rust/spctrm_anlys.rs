@@ -19,6 +19,13 @@ struct SpectralState {
     // Amplitude & frequency estimation
     amp: f64,
 
+    // cumulative frequency estimation
+    crossings: u64,      // number of zero crossings (half cycles)
+    samples_sum: u64,    // total samples between counted crossings
+
+    envelope: f64,
+    phase: f64,
+
     last_sign: i8,
     last_cross_idx: u64,
     freq: f64,
@@ -31,38 +38,54 @@ impl SpectralState {
             mean: 0.0,
             m2: 0.0,
             amp: 0.0,
+            crossings: 0,
+            samples_sum: 0,
+            envelope: 0.0,
+            phase: 0.0,
             last_sign: 0,
             last_cross_idx: 0,
             freq: 0.0,
         }
     }
 
-    fn update(&mut self, x: f64) -> (f64, f64, f64) {
-        // Update mean (offset) via Welford
+    fn update(&mut self, x: f64) -> (f64, f64, f64, f64) {
+        // dt = 1/sample_rate
+        const DT: f64 = 1.0 / SAMPLE_RATE_HZ;
+
+        // --- mean & variance via Welford ---
         self.count += 1;
         let delta = x - self.mean;
         self.mean += delta / self.count as f64;
         let delta2 = x - self.mean;
         self.m2 += delta * delta2;
 
-        // Amplitude: smoothed absolute deviation to mean (approx.)
+        // --- envelope & amplitude ---
         let abs_dev = (x - self.mean).abs();
-        self.amp = (1.0 - ALPHA) * self.amp + ALPHA * abs_dev * 1.253314; // scale pi/2 sqrt(2) approx to get peek amplitude from abs dev
+        // exponential decay envelope
+        self.envelope *= 0.99;
+        if abs_dev > self.envelope { self.envelope = abs_dev; }
+        // convert to peak amplitude (~sqrt(2) for sine RMS), use factor 1.0 for simplicity
+        self.amp = (1.0 - ALPHA) * self.amp + ALPHA * self.envelope;
 
-        // Frequency via zero-crossing of (x-mean)
+        // --- frequency via zero-crossing count ---
         let centered = x - self.mean;
         let sign = if centered >= 0.0 { 1 } else { -1 };
         if self.last_sign != 0 && sign != self.last_sign {
             let samples_since = self.count - self.last_cross_idx;
-            if samples_since > 0 {
-                let inst_freq = SAMPLE_RATE_HZ / samples_since as f64;
-                self.freq = (1.0 - ALPHA) * self.freq + ALPHA * inst_freq;
+            if samples_since > 1 {
+                self.crossings += 1;
+                self.samples_sum += samples_since;
+                let period_samples = (self.samples_sum as f64) / (self.crossings as f64) * 2.0;
+                self.freq = SAMPLE_RATE_HZ / period_samples;
             }
             self.last_cross_idx = self.count;
         }
         self.last_sign = sign;
 
-        (self.freq, self.amp, self.mean)
+        // --- phase advance ---
+        self.phase = (self.phase + 2.0 * std::f64::consts::PI * self.freq * DT) % (2.0 * std::f64::consts::PI);
+
+        (self.freq, self.amp, self.mean, self.phase)
     }
 }
 
@@ -102,21 +125,24 @@ pub extern "C" fn spctrm_anlys(this: *mut spctrm_anlys_FUNCTION_BLOCK, instance:
         let fb = &mut *this;
         let state = &mut *state_ptr;
 
-        let (tf, ta, toff) = state.t.update(fb.temperature as f64);
-        let (pf, pa, poff) = state.p.update(fb.pressure as f64);
-        let (hf, ha, hoff) = state.h.update(fb.humidity as f64);
+        let (tf, ta, toff, tph) = state.t.update(fb.temperature as f64);
+        let (pf, pa, poff, pph) = state.p.update(fb.pressure as f64);
+        let (hf, ha, hoff, hph) = state.h.update(fb.humidity as f64);
 
         fb.t_freq = tf as c_float;
         fb.t_ampl = ta as c_float;
         fb.t_offset = toff as c_float;
+        fb.t_phase = tph as c_float;
 
         fb.p_freq = pf as c_float;
         fb.p_ampl = pa as c_float;
         fb.p_offset = poff as c_float;
+        fb.p_phase = pph as c_float;
 
         fb.h_freq = hf as c_float;
         fb.h_ampl = ha as c_float;
         fb.h_offset = hoff as c_float;
+        fb.h_phase = hph as c_float;
     }
 }
 
