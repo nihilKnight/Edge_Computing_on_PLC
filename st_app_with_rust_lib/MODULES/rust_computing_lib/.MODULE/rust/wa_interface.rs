@@ -1,15 +1,16 @@
 use std::os::raw::*;
 
 
-/************* Function Block simple_computing *************/
+/************* Function Block z_anm_detc *************/
 #[repr(C)]
-pub struct simple_computing_FUNCTION_BLOCK {
-  pub temperature_data: dataSeq50, // VAR_INPUT
-  pub pressure_data: dataSeq50, // VAR_INPUT
-  pub humidity_data: dataSeq50, // VAR_INPUT
-  pub mean: c_short, // VAR_OUTPUT
-  pub variance: c_short, // VAR_OUTPUT
-  pub standard_deviation: c_short, // VAR_OUTPUT
+pub struct z_anm_detc_FUNCTION_BLOCK {
+  pub temperature: c_float, // VAR_INPUT
+  pub pressure: c_float, // VAR_INPUT
+  pub humidity: c_float, // VAR_INPUT
+  pub mean: c_float, // VAR_OUTPUT
+  pub variance: c_float, // VAR_OUTPUT
+  pub standard_deviation: c_float, // VAR_OUTPUT
+  pub z_score: c_float, // VAR_OUTPUT
 }
 
-/*********** End Function Block simple_computing ***********/
+/*********** End Function Block z_anm_detc ***********/

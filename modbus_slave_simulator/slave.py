@@ -25,7 +25,7 @@ REG_HUMIDITY = 1     # Humidity register address
 REG_PRESSURE = 2     # Pressure register address
 
 REGISTER_SCALE = 100  # Multiply sensor float by this factor before storing
-UPDATE_PERIOD = 3.0   # Seconds between sensor updates
+UPDATE_PERIOD = 0.05  # Seconds between sensor updates
 
 # ------------------------- Sensor Simulation --------------------------------
 

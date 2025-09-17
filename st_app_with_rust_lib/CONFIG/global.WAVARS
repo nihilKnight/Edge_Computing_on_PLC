@@ -10,9 +10,17 @@
         "isArray": false,
         "comment": "",
         "location": "IW0",
-        "type_arr": "INT",
+        "type_arr": [
+            "INT"
+        ],
         "group": "monitoring_data",
-        "row_index": 0
+        "row_index": 0,
+        "arrItems": [
+            {
+                "start": 0,
+                "end": 1
+            }
+        ]
     },
     {
         "date": "",
@@ -25,7 +33,9 @@
         "isArray": false,
         "comment": "",
         "location": "IW2",
-        "type_arr": "INT",
+        "type_arr": [
+            "INT"
+        ],
         "group": "monitoring_data",
         "row_index": 1
     },
@@ -40,7 +50,9 @@
         "isArray": false,
         "comment": "",
         "location": "IW4",
-        "type_arr": "INT",
+        "type_arr": [
+            "INT"
+        ],
         "group": "monitoring_data",
         "row_index": 2
     }

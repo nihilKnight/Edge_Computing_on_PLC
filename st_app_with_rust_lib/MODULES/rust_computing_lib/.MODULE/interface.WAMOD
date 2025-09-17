@@ -12,14 +12,14 @@
     "elements": {
         "POUs": [
             {
-                "name": "simple_computing",
+                "name": "z_anm_detc",
                 "type": "FB",
                 "ret_type": "",
                 "class": "",
                 "var_decls": [
                     {
-                        "name": "temperature_data",
-                        "type": "dataSeq50",
+                        "name": "temperature",
+                        "type": "REAL",
                         "keyword": "VAR_INPUT",
                         "description": "",
                         "init": "",
@@ -27,8 +27,8 @@
                         "retain": false
                     },
                     {
-                        "name": "pressure_data",
-                        "type": "dataSeq50",
+                        "name": "pressure",
+                        "type": "REAL",
                         "keyword": "VAR_INPUT",
                         "description": "",
                         "init": "",
@@ -36,8 +36,8 @@
                         "retain": false
                     },
                     {
-                        "name": "humidity_data",
-                        "type": "dataSeq50",
+                        "name": "humidity",
+                        "type": "REAL",
                         "keyword": "VAR_INPUT",
                         "description": "",
                         "init": "",
@@ -46,7 +46,7 @@
                     },
                     {
                         "name": "mean",
-                        "type": "INT",
+                        "type": "REAL",
                         "keyword": "VAR_OUTPUT",
                         "description": "",
                         "init": "0",
@@ -55,7 +55,7 @@
                     },
                     {
                         "name": "variance",
-                        "type": "INT",
+                        "type": "REAL",
                         "keyword": "VAR_OUTPUT",
                         "description": "",
                         "init": "0",
@@ -64,7 +64,16 @@
                     },
                     {
                         "name": "standard_deviation",
-                        "type": "INT",
+                        "type": "REAL",
+                        "keyword": "VAR_OUTPUT",
+                        "description": "",
+                        "init": "0",
+                        "constant": false,
+                        "retain": false
+                    },
+                    {
+                        "name": "z_score",
+                        "type": "REAL",
                         "keyword": "VAR_OUTPUT",
                         "description": "",
                         "init": "0",
