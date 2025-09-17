@@ -9,6 +9,7 @@
     "main_language": "st",
     "lastOpenTime": 1758027294181,
     "select_plc": {
-        "host": "192.168.1.201"
+        "host": "192.168.1.201",
+        "plc_name": "MainEC_PLC"
     }
 }

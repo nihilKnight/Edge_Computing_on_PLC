@@ -7,3 +7,7 @@ mod wa_func;
 #[path = "../../implements/rust/z_anm_detc.rs"]
 mod z_anm_detc;
 
+
+#[path = "../../implements/rust/spctrm_anlys.rs"]
+mod spctrm_anlys;
+

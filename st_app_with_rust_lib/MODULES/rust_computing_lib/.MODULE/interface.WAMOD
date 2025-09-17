@@ -155,6 +155,123 @@
                 ],
                 "invisiable": false,
                 "description": ""
+            },
+            {
+                "name": "spctrm_anlys",
+                "type": "FB",
+                "ret_type": "",
+                "class": "",
+                "var_decls": [
+                    {
+                        "name": "temperature",
+                        "type": "REAL",
+                        "keyword": "VAR_INPUT",
+                        "description": "",
+                        "init": "",
+                        "constant": false,
+                        "retain": false
+                    },
+                    {
+                        "name": "humidity",
+                        "type": "REAL",
+                        "keyword": "VAR_INPUT",
+                        "description": "",
+                        "init": "",
+                        "constant": false,
+                        "retain": false
+                    },
+                    {
+                        "name": "pressure",
+                        "type": "REAL",
+                        "keyword": "VAR_INPUT",
+                        "description": "",
+                        "init": "",
+                        "constant": false,
+                        "retain": false
+                    },
+                    {
+                        "name": "t_freq",
+                        "type": "REAL",
+                        "keyword": "VAR_OUTPUT",
+                        "description": "",
+                        "init": "",
+                        "constant": false,
+                        "retain": false
+                    },
+                    {
+                        "name": "t_ampl",
+                        "type": "REAL",
+                        "keyword": "VAR_OUTPUT",
+                        "description": "",
+                        "init": "",
+                        "constant": false,
+                        "retain": false
+                    },
+                    {
+                        "name": "t_offset",
+                        "type": "REAL",
+                        "keyword": "VAR_OUTPUT",
+                        "description": "",
+                        "init": "",
+                        "constant": false,
+                        "retain": false
+                    },
+                    {
+                        "name": "h_freq",
+                        "type": "REAL",
+                        "keyword": "VAR_OUTPUT",
+                        "description": "",
+                        "init": "",
+                        "constant": false,
+                        "retain": false
+                    },
+                    {
+                        "name": "h_ampl",
+                        "type": "REAL",
+                        "keyword": "VAR_OUTPUT",
+                        "description": "",
+                        "init": "",
+                        "constant": false,
+                        "retain": false
+                    },
+                    {
+                        "name": "h_offset",
+                        "type": "REAL",
+                        "keyword": "VAR_OUTPUT",
+                        "description": "",
+                        "init": "",
+                        "constant": false,
+                        "retain": false
+                    },
+                    {
+                        "name": "p_freq",
+                        "type": "REAL",
+                        "keyword": "VAR_OUTPUT",
+                        "description": "",
+                        "init": "",
+                        "constant": false,
+                        "retain": false
+                    },
+                    {
+                        "name": "p_ampl",
+                        "type": "REAL",
+                        "keyword": "VAR_OUTPUT",
+                        "description": "",
+                        "init": "",
+                        "constant": false,
+                        "retain": false
+                    },
+                    {
+                        "name": "p_offset",
+                        "type": "REAL",
+                        "keyword": "VAR_OUTPUT",
+                        "description": "",
+                        "init": "",
+                        "constant": false,
+                        "retain": false
+                    }
+                ],
+                "invisiable": false
             }
         ],
         "datatypes": []
