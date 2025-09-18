@@ -881,6 +881,18 @@ class PLCApp {
     if (!sensor.sineChart || freq == null || ampl == null || offset == null)
       return;
 
+    // determine dynamic range based on current data, then smooth to avoid jumps
+    const currentSpan = ampl * 3;
+    const targetMin = offset - currentSpan;
+    const targetMax = offset + currentSpan;
+    if (!sensor.yRange) {
+      sensor.yRange = { min: targetMin, max: targetMax };
+    } else {
+      const SMOOTH = 0.2;
+      sensor.yRange.min = sensor.yRange.min * (1 - SMOOTH) + targetMin * SMOOTH;
+      sensor.yRange.max = sensor.yRange.max * (1 - SMOOTH) + targetMax * SMOOTH;
+    }
+
     const PAST_MS = 60000; // past window
     const FUTURE_MS = 60000; // predict ahead 60s
     const TOTAL_MS = PAST_MS + FUTURE_MS;
@@ -896,9 +908,9 @@ class PLCApp {
     const lineFuture = [];
     for (let i = 0; i <= points; i++) {
       const tMs = startMs + i * dtMs;
-      const relSec = (tMs - nowMs) / 1000;
+      const relAbsSec = (tMs - sensor._sineStartTimeMs) / 1000;
       const ph = phase != null ? phase : 0;
-      const y = ampl * Math.sin(2 * Math.PI * freq * relSec + ph) + offset;
+      const y = ampl * Math.sin(2 * Math.PI * freq * relAbsSec + ph) + offset;
       if (tMs <= nowMs) {
         linePast.push([tMs, Number(y.toFixed(3))]);
       } else {
@@ -914,13 +926,10 @@ class PLCApp {
       .concat(lineFuture)
       .map((p) => p[1])
       .concat(scatterData.map((p) => p[1]));
-    const minY = Math.min(...ys);
-    const maxY = Math.max(...ys);
-    const pad = (maxY - minY) * 0.1 || 1;
 
     sensor.sineChart.setOption({
       xAxis: { type: "time", min: startMs, max: endMs, name: "时间" },
-      yAxis: { min: minY - pad, max: maxY + pad, scale: true },
+      yAxis: { min: sensor.yRange.min, max: sensor.yRange.max, scale: true },
       series: [
         {
           name: "预测(已发生)",

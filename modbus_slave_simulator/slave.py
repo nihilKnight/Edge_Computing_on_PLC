@@ -44,7 +44,7 @@ def generate_sensor_values(t: float) -> List[float]:
     """
     temperature = 25 + 5 * math.sin(2 * math.pi * (t / 60)) + random.uniform(-0.5, 0.5)
     humidity = 50 + 10 * math.sin(2 * math.pi * (t / 120)) + random.uniform(-1.0, 1.0)
-    pressure = 101 + 2 * math.sin(2 * math.pi * (t / 180)) + random.uniform(-0.2, 0.2)
+    pressure = 101 + 5 * math.sin(2 * math.pi * (t / 180)) + random.uniform(-0.2, 0.2)
     return [temperature, humidity, pressure]
 
 

@@ -18,6 +18,7 @@ struct SpectralState {
 
     // Amplitude & frequency estimation
     amp: f64,
+    var_ewma: f64,
 
     // cumulative frequency estimation
     crossings: u64,      // number of zero crossings (half cycles)
@@ -38,6 +39,7 @@ impl SpectralState {
             mean: 0.0,
             m2: 0.0,
             amp: 0.0,
+            var_ewma: 0.0,
             crossings: 0,
             samples_sum: 0,
             envelope: 0.0,
@@ -49,9 +51,6 @@ impl SpectralState {
     }
 
     fn update(&mut self, x: f64) -> (f64, f64, f64, f64) {
-        // dt = 1/sample_rate
-        const DT: f64 = 1.0 / SAMPLE_RATE_HZ;
-
         // --- mean & variance via Welford ---
         self.count += 1;
         let delta = x - self.mean;
@@ -59,15 +58,12 @@ impl SpectralState {
         let delta2 = x - self.mean;
         self.m2 += delta * delta2;
 
-        // --- envelope & amplitude ---
-        let abs_dev = (x - self.mean).abs();
-        // exponential decay envelope
-        self.envelope *= 0.99;
-        if abs_dev > self.envelope { self.envelope = abs_dev; }
-        // convert to peak amplitude (~sqrt(2) for sine RMS), use factor 1.0 for simplicity
-        self.amp = (1.0 - ALPHA) * self.amp + ALPHA * self.envelope;
+        // --- variance EWMA & amplitude ---
+        let inst_var = self.m2 / self.count as f64;
+        self.var_ewma = (1.0 - ALPHA) * self.var_ewma + ALPHA * inst_var;
+        self.amp = self.var_ewma.sqrt() * (2.0_f64).sqrt();
 
-        // --- frequency via zero-crossing count ---
+        // --- frequency ---
         let centered = x - self.mean;
         let sign = if centered >= 0.0 { 1 } else { -1 };
         if self.last_sign != 0 && sign != self.last_sign {
@@ -75,15 +71,16 @@ impl SpectralState {
             if samples_since > 1 {
                 self.crossings += 1;
                 self.samples_sum += samples_since;
-                let period_samples = (self.samples_sum as f64) / (self.crossings as f64) * 2.0;
+                let period_samples = (self.samples_sum as f64) / (self.crossings as f64);
                 self.freq = SAMPLE_RATE_HZ / period_samples;
             }
             self.last_cross_idx = self.count;
         }
         self.last_sign = sign;
 
-        // --- phase advance ---
-        self.phase = (self.phase + 2.0 * std::f64::consts::PI * self.freq * DT) % (2.0 * std::f64::consts::PI);
+        // --- phase: absolute time ---
+        let elapsed = self.count as f64 / SAMPLE_RATE_HZ;
+        self.phase = (2.0 * std::f64::consts::PI * self.freq * elapsed) % (2.0 * std::f64::consts::PI);
 
         (self.freq, self.amp, self.mean, self.phase)
     }
